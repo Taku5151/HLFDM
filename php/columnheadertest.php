@@ -1,26 +1,24 @@
 <?php
 
-$datahost = "127.0.0.1";
-// $datahost = "localhost";
-$datauser = "root";
-$datapw = "";
-$datadb = "test";
-$dc;
-
 $host = '127.0.0.1';
+$port = '3306';
 $server = $host . ':' . $port;
 $user = 'root';
 $password = '';
 
-$dc = mysqli_connect($datahost, $datauser, $datapw, $datadb);
-if (!$dc)
+$link = mysql_connect ($server, $user, $password);
+if (!$link)
 {
-	die('Error: Could not connect: ' . mysqli_connect_error());
+	die('Error: Could not connect: ' . mysql_error());
 }
 
-$sql = 'SELECT * FROM testtable';
+$database = 'test';
 
-$result = mysqli_query($dc, $sql);
+mysql_select_db($database);
+
+$query = "SELECT * FROM testtable;";
+
+$result = mysql_query($query);
 
 if (!$result)
 {
@@ -35,6 +33,17 @@ else
 	{
 		$meta = mysql_fetch_field($result, $i);
 		echo '<td>' . $meta->name . '</td>';
+		$i = $i + 1;
+	}
+	echo '</tr>';
+
+
+	$i = 0;
+	echo '<tr>';
+	while ($i < mysql_num_fields($result))
+	{
+		$meta = mysql_fetch_field($result, $i);
+		echo '<td>' . $meta->type . '</td>';
 		$i = $i + 1;
 	}
 	echo '</tr>';
