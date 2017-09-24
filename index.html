@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>HLF Data</title>
+    <link rel="stylesheet" href="jquery/jquery-ui.css">
+    <script src="jquery/jquery-1.10.2.js"></script>
+    <script src="jquery/jquery-ui.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
@@ -16,7 +20,7 @@
 
         <div id='QueryContainer'>
             <p class='Keylabels'>Command Box:</p>
-            <textarea name="name" rows="8" cols="200"></textarea>
+            <textarea name="name" rows="8" cols="200" onkeydown="commandBoxDown(event);" onkeyup="commandBoxUp(event);"></textarea>
         </div>
         <div id='MainOutput'>
         </div>
