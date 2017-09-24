@@ -12,7 +12,7 @@ function InputManagerClass() {
   var keyctrl = false;
 
   this.CommandBoxDown = function(event) {
-    console.log(event.keyCode);
+    // console.log(event.keyCode);
     switch(event.keyCode) {
       case 27: //Escape
         document.getElementById('QueryTextArea').value = "";
