@@ -1,6 +1,7 @@
 var DataManager;
 var ResultsTable;
 var InputManager;
+var QueryManager;
 
 function OnLoad() {
     DataManager = new DataManagerClass();
@@ -20,7 +21,6 @@ function InputManagerClass() {
       case 83: //s
         if(keyctrl) {
           keyctrl = false;
-          this.ExecuteSQL();
         }
         break;
       case 91: //Ctrl
