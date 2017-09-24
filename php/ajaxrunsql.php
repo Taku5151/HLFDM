@@ -1,10 +1,15 @@
 <?php
 
+//Accept a SQL Command String and return JSON with an array of header information,
+//followed by table data.
+
+
 include "global.php";
 
 ConnectDB();
 
-$sql = "SELECT * FROM testtable;";
+$sql = $_POST["SQLCommand"];
+// $sql = "SELECT * FROM testtable;";
 
 $result = mysqli_query($dc, $sql);
 
@@ -18,10 +23,7 @@ if (!$result)
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-$output = "[";
-
-$fieldnames = "{";
-$fieldtypes = "{";
+$output = "[[";
 
 $fieldnamesarray = array();
 $fieldtypesarray = array();
@@ -31,12 +33,11 @@ $rowcount = mysqli_num_fields($result);
 
 while ($info = $result->fetch_field()) {
   if ($i != 0) {
-    $fieldnames.= ",";
-    $fieldtypes.= ",";
+    $output.= ",";
   }
 
-  $fieldnames .= '"field' . $i . '":"' . $info->name . '"';
-  $fieldtypes .= '"field' . $i . '":"' . $info->type. '"';
+  $output .= '{"name":"' . $info->name . '",';
+  $output .= '"type":' . $info->type. '}';
 
   array_push($fieldnamesarray, $info->name);
   array_push($fieldtypesarray, $info->type);
@@ -44,15 +45,12 @@ while ($info = $result->fetch_field()) {
   $i++;
 }
 
-$output .= $fieldnames . "}," . $fieldtypes . "}";
+$output .=  "]";
 
 while ($row = mysqli_fetch_array($result)) {
-  if ($output != "[")
-    $output .= ",";
+  $output.= ",{";
 
   $i = 0;
-  $output.= "{";
-
   while($i < $rowcount) {
     if($i != 0)
       $output.= ",";
