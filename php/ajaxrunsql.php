@@ -10,8 +10,9 @@ $result = mysqli_query($dc, $sql);
 
 if (!$result)
 {
-  $message = 'ERROR:' . mysqli_error();
-  return $message;
+  $message = 'SQL ERROR: ' . mysqli_error($dc);
+  echo $message;
+  return;
 }
 
 header("Access-Control-Allow-Origin: *");
