@@ -294,8 +294,11 @@ function UtilTableToCSV(tableID) {
         win.close();
     } else if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
     {
-        var data = "data:text/csv;charset=utf-8," + data;
-        var file = encodeURI(data);
+        // var data = "data:text/csv;charset=utf-8," + data;
+        // var file = encodeURI(data);
+
+        var blob = new Blob([data], { type: 'text/csv' });
+        var file = URL.createObjectURL(blob);
 
         var templink = document.createElement("a");
         templink.setAttribute("href", file);

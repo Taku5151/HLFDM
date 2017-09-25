@@ -5,7 +5,7 @@ $datahost = "127.0.0.1";
 // $datahost = "localhost";
 $datauser = "root";
 $datapw = "";
-$datadb = "test";
+$datadb = "HLFDM";
 $dc;
 
 
