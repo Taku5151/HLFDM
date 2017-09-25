@@ -59,7 +59,7 @@ html, body {
 
 #QueryContainer textarea {
   margin-left: 10px;
-  font: 11px system-ui;
+  font: 12px arial;
 }
 
 #MainOutput{
