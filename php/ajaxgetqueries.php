@@ -27,8 +27,8 @@ while ($row = mysqli_fetch_array($result)) {
     $output .= ",";
 
     $output .= '{"ID":' . $row[0] . ',';
-    $output .= '"Name":"' . $row[1] . '",';
-    $output .= '"Color":"' . $row[2] . '",';
+    $output .= '"Name":"' . CleanJSON($row[1]) . '",';
+    $output .= '"Color":"' . CleanJSON($row[2]) . '",';
     $output .= '"Order":' . $row[3] . ',';
     $output .= '"Query":"' . CleanJSON($row[4]) . '"}';
 }

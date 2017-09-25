@@ -68,7 +68,7 @@ while ($row = mysqli_fetch_array($result)) {
     case 13:
     case 16:
     case 246:
-      $output.= $row[$i];
+      $output.= CleanJSON($row[$i]);
       break;
     case 7:
     case 10:
@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_array($result)) {
     case 253:
     case 254:
     default:
-      $output.= '"' . $row[$i] . '"';
+      $output.= '"' . CleanJSON($row[$i]) . '"';
       break;
       }
     $i++;
