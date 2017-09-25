@@ -21,3 +21,10 @@ function ConnectDB() {
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 }
+
+function CleanJSON($string) {
+  return str_replace("\n", "\\n", str_replace("\r", "\\r", str_replace("\"", "\\\"", str_replace("\\", "\\\\", $string))));
+}
+function CleanSQL($string) {
+  return str_replace("\\", "\\\\", str_replace("'", "''", $string));
+}

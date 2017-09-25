@@ -26,11 +26,11 @@ while ($row = mysqli_fetch_array($result)) {
   if($output != "[")
     $output .= ",";
 
-    $output .= '"{ID":' . $row[0] . ',';
+    $output .= '{"ID":' . $row[0] . ',';
     $output .= '"Name":"' . $row[1] . '",';
     $output .= '"Color":"' . $row[2] . '",';
     $output .= '"Order":' . $row[3] . ',';
-    $output .= '"Query":"' . $row[4] . '"}';
+    $output .= '"Query":"' . CleanJSON($row[4]) . '"}';
 }
 $output .="]";
 

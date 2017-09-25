@@ -7,6 +7,8 @@ function OnLoad() {
     DataManager = new DataManagerClass();
     ResultsTable = new ResultsTableClass();
     InputManager = new InputManagerClass();
+    QueryManager = new QueryManagerClass();
+    QueryManager.RefreshQueries();
 }
 
 function InputManagerClass() {
@@ -21,6 +23,9 @@ function InputManagerClass() {
       case 83: //s
         if(keyctrl) {
           keyctrl = false;
+          event.preventDefault();
+          event.stopPropagation();
+          QueryManager.SaveQuery();
         }
         break;
       case 91: //Ctrl
@@ -50,11 +55,123 @@ function InputManagerClass() {
 
   this.ExecuteSQL = function() {
     var sqlCommand = document.getElementById('QueryTextArea').value.replace(/(\r\n|\n|\r)/gm,"");
-    DataManager.ExecuteSQL(sqlCommand, function() {ResultsTable.Display()});
+    DataManager.ExecuteSQL(sqlCommand, function() {ResultsTable.Display();});
   }
 }
 
+function QueryManagerClass() {
+  this.QueryData = [];
+  this.SelectedIndex = -1;
 
+  this.RefreshQueries = function () {
+    this.AjaxGetQueries(function() {QueryManager.DisplayQueries();});
+  };
+
+  this.AjaxGetQueries = function (CallBack) {
+    $.ajax("php/ajaxgetqueries.php", {
+        type: "POST",
+        data: {
+        },
+        success: function (data) {
+            QueryManager.QueryData = data;
+            if(typeof(data) === "string")
+              MainOutput.innerHTML = data;
+            else
+              CallBack();
+        },
+        error: function (data) {
+          alert("Error with AjaxGetQueries");
+        }
+    });
+  };
+
+  this.AjaxSaveQuery = function (Name, Query, CallBack) {
+    $.ajax("php/ajaxsavequery.php", {
+        type: "POST",
+        data: {
+          name: Name,
+          query: Query
+        },
+        success: function (data) {
+            if(data === "success") {
+              alert("Query Saved");
+              CallBack();
+            }
+            else
+              MainOutput.innerHTML = data;
+        },
+        error: function (data) {
+          alert("Error with AjaxSaveQuery");
+        }
+    });
+  };
+
+  this.AjaxUpdateQuery = function (_ID, Query, CallBack) {
+    $.ajax("php/ajaxupdatequery.php", {
+        type: "POST",
+        data: {
+          ID: _ID,
+          query: Query
+        },
+        success: function (data) {
+            if(data === "success") {
+              alert("Query Saved");
+              CallBack();
+            }
+            else
+              MainOutput.innerHTML = data;
+        },
+        error: function (data) {
+          alert("Error with AjaxUpdateQuery");
+        }
+    });
+  };
+
+
+  this.DisplayQueries = function () {
+    var html = "<div class='QueryItem' id='QueryItem-1' onclick='QueryManager.OnQueryClick(-1);'>New Query</div>";
+    for(var i = 0; i < this.QueryData.length; i++) {
+      html += "<div class='QueryItem' id='QueryItem" + this.QueryData[i].ID + "' onclick='QueryManager.OnQueryClick(" + this.QueryData[i].ID + ")'>";
+      html += this.QueryData[i].Name;
+      html += "</div>";
+    }
+    document.getElementById("SavedQueriesBox").innerHTML = html;
+    this.HighlightSelected();
+  };
+
+  this.OnQueryClick = function (ID) {
+    this.SelectedIndex = ID;
+    if(ID !== -1) {
+      for(var i = 0; i < QueryManager.QueryData.length; i ++) {
+        if(QueryManager.QueryData[i].ID == ID) {
+          document.getElementById("QueryTextArea").value = QueryManager.QueryData[i].Query;
+          break;
+        }
+      }
+    }
+    document.getElementById("QueryTextArea").focus();
+    this.HighlightSelected();
+  };
+
+  this.HighlightSelected = function() {
+    var queryItems = document.querySelectorAll(".QueryItem");
+    for (var i = 0; i < queryItems.length; i++) {
+      queryItems[i].className = "QueryItem";
+    }
+    document.getElementById("QueryItem" + this.SelectedIndex).className += " SelectedQuery";
+  };
+
+  this.SaveQuery = function () {
+    if(this.SelectedIndex === -1) {
+      var queryName = prompt("Enter Query Name","Save Query");
+      if(queryName !== null) {
+        this.AjaxSaveQuery(queryName, document.getElementById("QueryTextArea").value, function() {QueryManager.RefreshQueries();});
+      }
+    }
+    else
+      this.AjaxUpdateQuery(this.SelectedIndex, document.getElementById("QueryTextArea").value, function() {QueryManager.RefreshQueries();});
+  };
+}
 
 
 function DataManagerClass() {
@@ -120,25 +237,27 @@ function ResultsTableClass() {
       for (var j = 0; j < columnHeaders.length; j++) {
         html += "<td>";
         switch(columnTypes[j]) {
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 8:
-          case 9:
-          case 13:
-          case 16:
-          case 246:
+          case 1: //Bool
+          case 2: //Small Int
+          case 3: //Integer
+          case 8: //Big Int
+          case 9: //Medium Int
+          case 13: //Year
+          case 16: //Bit
+            html += DataManager.DetailData[i][columnHeaders[j]].toFixed(0).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            break;
+          case 4: //Float
+          case 5: //Double
+          case 246: //Decimal
             html += DataManager.DetailData[i][columnHeaders[j]].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             break;
-          case 7:
-          case 10:
-          case 11:
-          case 12:
-          case 252:
-          case 253:
-          case 254:
+          case 7: //Timestamp
+          case 10: //Date
+          case 11: //Time
+          case 12: //DateTime
+          case 252: //TinyBlob
+          case 253: //VarChar
+          case 254: //Binary
           default:
             html += DataManager.DetailData[i][columnHeaders[j]];
             break;

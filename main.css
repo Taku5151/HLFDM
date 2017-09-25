@@ -1,94 +1,112 @@
 html, body {
-    font-family: arial;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
+  font-family: arial;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
 
-div#HeaderContainer {
-    position: fixed;
-    height: 36px;
-    width: 100%;
-    border-bottom: 1px solid black;
-    margin: 0px;
-    background-color: lightgrey;
-    z-index: 1;
+#HeaderContainer {
+  position: fixed;
+  height: 36px;
+  width: 100%;
+  border-bottom: 1px solid black;
+  margin: 0px;
+  background-color: lightgrey;
+  z-index: 1;
 }
 
-div#HeaderContainer h1 {
+#HeaderContainer h1 {
   margin: 0px;
 }
 
-div#BodyContainer {
-    position: relative;
-    top: 38px;
-    height: calc(100% - 38px);
+#BodyContainer {
+  position: relative;
+  top: 38px;
+  height: calc(100% - 38px);
 }
 
-div#SavedQueriesContainer {
-    text-align: center;
-    float: left;
-    width: 120px;
-    height: 100%;
-    border-right: 1px solid black;
+#SavedQueriesContainer {
+  text-align: center;
+  float: left;
+  width: 120px;
+  height: 100%;
+  border-right: 1px solid black;
 }
 
-div#QueryContainer {
-    float: left;
-    width: calc(100% - 123px);
-    height: 150px;
+.QueryItem {
+  box-sizing: border-box;
+  width: 115px;
+  text-align: left;
+  border: 1px solid black;
+  margin: 2px;
+  padding: 3px;
+  font-size: 10px;
 }
 
-div#QueryContainer textarea {
+.SelectedQuery {
+  background-color: grey;
+}
+
+.QueryItem:hover {
+  background-color: grey;
+}
+
+#QueryContainer {
+  float: left;
+  width: calc(100% - 123px);
+  height: 150px;
+}
+
+#QueryContainer textarea {
   margin-left: 10px;
 }
 
-div#MainOutput{
-    float: left;
-    width: calc(100% - 123px);
-    height: calc(100% - 155px);
-    border-top: 1px solid black;
-    overflow-x: scroll;
-    overflow-y: scroll;
+#MainOutput{
+  float: left;
+  width: calc(100% - 123px);
+  height: calc(100% - 155px);
+  border-top: 1px solid black;
+  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 p.Keylabels {
-    padding: 0px;
-    margin: 5px;
+  padding: 0px;
+  margin: 5px;
 }
 
-table#MainTable, table#DetailTable {
-    border: 1px solid black;
-    border-collapse:collapse;
-    font-size: 12px;
-    width:0px;
+#MainTable, #DetailTable {
+  border: 1px solid black;
+  border-collapse:collapse;
+  font-size: 12px;
+  width:0px;
 }
 
 td.MainTableRegularData {
-    text-align: right;
+  text-align: right;
 }
 
 #MainTable th,td {
-    border: 1px solid black;
-    padding: 4px 12px 4px 12px;
-    white-space:nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  border: 1px solid black;
+  padding: 4px 12px 4px 12px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #DetailTable th,td {
-    border: 1px solid black;
-    padding: 2px 1px 2px 1px;
-    white-space:nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  border: 1px solid black;
+  padding: 2px 1px 2px 1px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 tr:nth-child(even) {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 tr:nth-child(odd) {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
 th.MainTableHeader {
