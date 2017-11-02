@@ -54,7 +54,7 @@ function InputManagerClass() {
   }
 
   this.ExecuteSQL = function() {
-    var sqlCommand = document.getElementById('QueryTextArea').value.replace(/(\r\n|\n|\r)/gm,"");
+    var sqlCommand = document.getElementById('QueryTextArea').value.replace(/(\r\n|\n|\r)/gm," ");
     DataManager.ExecuteSQL(sqlCommand, function() {ResultsTable.Display();});
   }
 }
